@@ -1,0 +1,35 @@
+import { Component, OnInit } from '@angular/core';
+import { HttpClient, HttpParams } from '@angular/common/http';
+
+@Component({
+  selector: 'app-products',
+  templateUrl: './products.component.html',
+  styleUrls: ['./products.component.css']
+})
+export class ProductsComponent implements OnInit {
+
+  album = {id: 1, price: 200, artist: 'Pranali'};
+  constructor(private http: HttpClient) { }
+  headers;
+  ngOnInit() {
+    this.http.get('https://api.github.com/users/seeschweiler').subscribe(data => {
+      console.log(data);
+    });
+  }
+  addAlbum() {
+    this.headers = new Headers();
+    this.headers.append('Content-Type', 'application/json');
+    const params = new HttpParams();
+    params.set('title', this.album.artist);
+    this.http.post('http://localhost:8880/add', params, { headers: this.headers})
+    .subscribe(
+        res => {
+            console.log(res);
+        },
+        err => {
+            console.log(err.message);
+        }
+    );
+  }
+
+}
